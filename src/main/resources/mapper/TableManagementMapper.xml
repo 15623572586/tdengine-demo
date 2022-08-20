@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyh.demo.mapper.tdengine.TableManagementMapper">
+
+    <update id="createSTable">
+        CREATE STABLE IF NOT EXISTS ${tableName} (
+            collected_time TIMESTAMP,
+            data_value DOUBLE
+        ) TAGS (
+            tag_name NCHAR(200),
+            department NCHAR(36),
+            production_line NCHAR(36),
+            region NCHAR(36),
+            code_9 NCHAR(9)
+        );
+    </update>
+
+    <select id="showStables" resultType="java.util.HashMap">
+        SHOW STABLES
+        <if test="stName != null and stName != ''">
+            LIKE '%stName%'
+        </if>
+    </select>
+</mapper>

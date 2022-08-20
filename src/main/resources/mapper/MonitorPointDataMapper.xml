@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyh.demo.mapper.tdengine.MonitorPointDataMapper">
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO
+        <foreach collection="list" index="index" item="pointData" separator=" ">
+            ${pointData.tName} USING ${pointData.stName}
+            TAGS(
+                #{pointData.tagName},
+                #{pointData.department}, #{pointData.productionLine}, #{pointData.region},
+                #{pointData.code9}
+            ) VALUES (
+                #{pointData.collectedTime}, #{pointData.dataValue},
+            )
+        </foreach>
+    </insert>
+    <resultMap id="BaseResultMap" type="map">
+        <id column="collected_time" jdbcType="TIMESTAMP" property="collectedTime" />
+        <result column="data_value" jdbcType="DOUBLE" property="dataValue" />
+    </resultMap>
+    <select id="selectByConditions" parameterType="com.yyh.demo.dto.SearchConditionDto" resultMap="BaseResultMap">
+        SELECT collected_time, data_value from
+        <choose>
+            <when test="tName != null and tName != ''">
+                monitor_point_data.${tName}
+            </when>
+            <otherwise>
+                monitor_point_data.${stName}
+            </otherwise>
+        </choose>
+        WHERE collected_time BETWEEN #{startTimeStemp} AND #{endTimeStemp}
+        <if test="code9 != null and tagName != ''">
+            AND code_9 = #{code9}
+        </if>
+    </select>
+</mapper>
