@@ -34,4 +34,6 @@ public interface MonitorPointDataMapper extends BaseMapper<MonitorPointData> {
      * @return 返回查询结果，不包含标签
      */
     List<MonitorPointData> selectByConditions(SearchConditionDto conditionDto);
+
+    int insertBatch2(@Param("list") List<MonitorPointData> monitorPointData);
 }

@@ -16,6 +16,7 @@ import java.util.List;
  */
 public interface IMonitorPointDataService extends IService<MonitorPointData> {
     Boolean saveBatch(List<MonitorPointData> monitorPointData);
+    Boolean saveBatch2(List<MonitorPointData> monitorPointData);
 
 //    Boolean saveBatch(List<MonitorPointData> monitorPointData);
 

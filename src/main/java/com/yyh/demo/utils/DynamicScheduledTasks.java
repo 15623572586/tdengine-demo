@@ -1,11 +1,13 @@
 package com.yyh.demo.utils;
 
+import com.google.errorprone.annotations.Var;
 import com.yyh.demo.commons.Vars;
 import com.yyh.demo.entity.MonitorPointInfo;
 import com.yyh.demo.mapper.mysql.MonitorPointInfomationMapper;
 import com.yyh.demo.mapper.tdengine.TableManagementMapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
@@ -54,16 +56,18 @@ public class DynamicScheduledTasks implements SchedulingConfigurer {
     }
 
     public void saveIntoMemory(List<MonitorPointInfo> monitorPointInfos) {
-        HashMap<String, MonitorPointInfo> newPointInfos = new HashMap<>();
-        for (MonitorPointInfo info: monitorPointInfos) {
-            // 创建超级表--如果存在自动忽略
-            String code4 = info.getRegion();
-            String stName = "st_" + code4;
-            tableManagementMapper.createSTable(stName);
-
-            newPointInfos.put(info.getPointId(), info);
-        }
-        Vars.pointInfos = newPointInfos;
-        System.out.println("测点数："+Vars.pointInfos.size());
+        Vars.pointInfoList = monitorPointInfos;
+//        HashMap<String, MonitorPointInfo> newPointInfos = new HashMap<>();
+//        for (MonitorPointInfo info: monitorPointInfos) {
+//            // 创建超级表--如果存在自动忽略
+//            String code4 = info.getRegion();
+//            String stName = "st_" + code4;
+//            tableManagementMapper.createSTableLz();
+////            tableManagementMapper.createSTable(stName);
+//
+//            newPointInfos.put(info.getTagName(), info);
+//        }
+//        Vars.pointInfos = newPointInfos;
+//        System.out.println("测点数："+Vars.pointInfos.size());
     }
 }

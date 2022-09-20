@@ -2,17 +2,45 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yyh.demo.mapper.tdengine.TableManagementMapper">
 
-    <update id="createSTable">
-        CREATE STABLE IF NOT EXISTS ${tableName} (
+<!--    弃用-->
+<!--    <update id="createSTable">-->
+<!--        CREATE STABLE IF NOT EXISTS ${tableName} (-->
+<!--            collected_time TIMESTAMP,-->
+<!--            data_value DOUBLE-->
+<!--        ) TAGS (-->
+<!--            tag_name NCHAR(200),-->
+<!--            department NCHAR(36),-->
+<!--            production_line NCHAR(36),-->
+<!--            region NCHAR(36),-->
+<!--            code_9 NCHAR(9)-->
+<!--        );-->
+<!--    </update>-->
+    <update id="createSTableData">
+        CREATE STABLE IF NOT EXISTS st_data (
             collected_time TIMESTAMP,
             data_value DOUBLE
         ) TAGS (
             tag_name NCHAR(200),
-            department NCHAR(36),
-            production_line NCHAR(36),
-            region NCHAR(36),
-            code_9 NCHAR(9)
+            code2 NCHAR(36),
+            code4 NCHAR(36),
+            code6 NCHAR(36),
+            code9 NCHAR(36),
+            code12 NCHAR(36)
         );
+    </update>
+    <update id="createTableData">
+        CREATE TABLE
+        <foreach collection="list" index="index" item="tableInfo" separator=" ">
+            IF NOT EXISTS ${tableInfo.tableName}
+            USING st_data TAGS (
+                #{tableInfo.tagName},
+                #{tableInfo.code2},
+                #{tableInfo.code4},
+                #{tableInfo.code6},
+                #{tableInfo.code9},
+                #{tableInfo.code12}
+            )
+        </foreach>
     </update>
 
     <select id="showStables" resultType="java.util.HashMap">

@@ -6,14 +6,16 @@ spring:
   datasource:
     td-engine:
       # 单数据源用url，多数据源用jdbc-url
+      # 域名得和tdengine域名相同
       jdbc-url: jdbc:TAOS://tdengine:6030/monitor_point_data?charset=UTF-8&locale=en_US.UTF-8&serverTimezone=Asia/Shanghai   # 6030
-  #    url: jdbc:TAOS-RS://tdengine:6041/monitor_point_data?charset=UTF-8  # 6041
+#      jdbc-url: jdbc:TAOS-RS://175.178.8.159:6041/monitor_point_data?charset=UTF-8  # 6041
       username: root
       password: ontoweb
       driver-class-name: com.taosdata.jdbc.TSDBDriver  # 6030
-#    driver-class-name: com.taosdata.jdbc.rs.RestfulDriver  # 6041
+#      driver-class-name: com.taosdata.jdbc.rs.RestfulDriver  # 6041
     mysql:
-      jdbc-url: jdbc:mysql://tdengine:8066/jeecg_coldrolling?charset=UTF-8&locale=en_US.UTF-8&timezone=UTC-8
+      jdbc-url: jdbc:mysql://150.158.55.26:8066/jeecg_coldrolling?charset=UTF-8&locale=en_US.UTF-8&timezone=UTC-8
+#      jdbc-url: jdbc:mysql://10.162.33.202:8066/jeecg_coldrolling?charset=UTF-8&locale=en_US.UTF-8&timezone=UTC-8
       username: mycat
       password: bwzw
       driver-class-name: com.mysql.cj.jdbc.Driver

@@ -34,4 +34,9 @@ public class MonitorPointData implements Serializable {
     private String productionLine;
     private String region;
     private String code9;
+    // tags
+    private String code2;
+    private String code4;
+    private String code6;
+    private String code12;
 }

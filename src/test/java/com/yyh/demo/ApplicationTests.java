@@ -47,7 +47,7 @@ class ApplicationTests {
         data1.setRegion("010203");
         data1.setCode9("010203008");
         list.add(data1);
-        tableManagementMapper.createSTable(data1.getStName());
+        tableManagementMapper.createSTableData();
         int insertCount = monitorPointDataMapper.insertBatch(list);
         System.out.println(insertCount);
     }
@@ -63,6 +63,16 @@ class ApplicationTests {
         conditionDto.setCode9("010203008");
         List<MonitorPointData> list = monitorPointDataMapper.selectByConditions(conditionDto);
         System.out.println(list);
+    }
+    @Test
+    public void createSt() {
+        tableManagementMapper.createSTableData();
+    }
+
+
+    @Test
+    public void createTableData() {
+
     }
 
 }

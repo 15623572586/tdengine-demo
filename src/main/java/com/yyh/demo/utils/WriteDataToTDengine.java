@@ -38,7 +38,7 @@ public class WriteDataToTDengine implements SchedulingConfigurer {
             //1.添加任务内容(Runnable)
             () -> {
                 System.out.println("===执行写入任务：" + dateFormat.format(new Date()));
-                saveBatch();
+//                saveBatch();
                 System.out.println("===完成一批写入任务：" + dateFormat.format(new Date()));
             },
             //2.设置执行周期(Trigger)

@@ -38,14 +38,15 @@ public class MonitorPointDataServiceImpl extends ServiceImpl<MonitorPointDataMap
         int res = monitorPointDataMapper.insertBatch(monitorPointData);
         return !StringUtils.isEmpty(Integer.toString(res));
     }
+    @Override
+    public Boolean saveBatch2(List<MonitorPointData> monitorPointData) {
+        int res = monitorPointDataMapper.insertBatch2(monitorPointData);
+        return !StringUtils.isEmpty(Integer.toString(res));
+    }
 
     @Override
     public String selectByCollectedTime(SearchConditionDto conditionDto) {
-        String pointId = conditionDto.getPointId();  //测点id  用于普通表查询
-        String code4 = conditionDto.getRegion();  // 四码 超级表查询
-        if (StringUtils.isEmpty(pointId) && StringUtils.isEmpty(code4))
-            return new Result().message("pointId and code4 are null").fail();
-        MonitorPointInfo info = Vars.pointInfos.get(pointId);
+        String tagName = conditionDto.getTagName();  //测点id  用于普通表查询
         try {
             conditionDto.setStartTimeStemp(Vars.dateFormat.parse(conditionDto.getStartTime()).getTime());
             conditionDto.setEndTimeStemp(Vars.dateFormat.parse(conditionDto.getEndTime()).getTime());
@@ -56,17 +57,23 @@ public class MonitorPointDataServiceImpl extends ServiceImpl<MonitorPointDataMap
         // 优先级：普通表查询 > 超级表
         // 1. 普通表查询-：
         // 不能设置tag查询条件，否则报错TDengine ERROR (80000200): invalid operation: filter on tag not supported for normal table
-        if (StringUtils.isNotEmpty(pointId))
-            conditionDto.setTName("t_" + pointId);
+        if (StringUtils.isNotEmpty(tagName))
+            conditionDto.setTName("`" + tagName + "`");
+        else {
             // 2.超级表查询：
             // 如果不设置tag条件，则扫描超级表下所有子表，
             // 如果设置了tag条件，先根据tag值过滤子表，再从过滤后的子表中查询
-        else {
-            conditionDto.setStName("st_" + code4);
-            if (StringUtils.isNotEmpty(conditionDto.getTagName()))
-                conditionDto.setTagName(conditionDto.getTagName());  // 设置其他tag查询条件
+            conditionDto.setStName("st_lz");
+            if (StringUtils.isNotEmpty(conditionDto.getCode2()))
+                conditionDto.setCode9(conditionDto.getCode2());  // 设置其他tag查询条件
+            if (StringUtils.isNotEmpty(conditionDto.getCode4()))
+                conditionDto.setCode9(conditionDto.getCode4());  // 设置其他tag查询条件
+            if (StringUtils.isNotEmpty(conditionDto.getCode6()))
+                conditionDto.setCode9(conditionDto.getCode6());  // 设置其他tag查询条件
             if (StringUtils.isNotEmpty(conditionDto.getCode9()))
                 conditionDto.setCode9(conditionDto.getCode9());  // 设置其他tag查询条件
+            if (StringUtils.isNotEmpty(conditionDto.getCode12()))
+                conditionDto.setCode9(conditionDto.getCode12());  // 设置其他tag查询条件
         }
         List<MonitorPointData> list = monitorPointDataMapper.selectByConditions(conditionDto);
         return new Result().data(list).success();

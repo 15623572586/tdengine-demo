@@ -11,7 +11,19 @@
                 #{pointData.department}, #{pointData.productionLine}, #{pointData.region},
                 #{pointData.code9}
             ) VALUES (
-                #{pointData.collectedTime}, #{pointData.dataValue},
+                #{pointData.collectedTime}, #{pointData.dataValue}
+            )
+        </foreach>
+    </insert>
+    <insert id="insertBatch2" parameterType="java.util.List">
+        INSERT INTO
+        <foreach collection="list" index="index" item="pointData" separator=" ">
+            ${pointData.tName} USING st_data (
+                tag_name
+            ) TAGS (
+                #{pointData.tagName}
+            ) VALUES (
+                #{pointData.collectedTime}, #{pointData.dataValue}
             )
         </foreach>
     </insert>
@@ -31,7 +43,7 @@
         </choose>
         WHERE collected_time BETWEEN #{startTimeStemp} AND #{endTimeStemp}
         <if test="code9 != null and tagName != ''">
-            AND code_9 = #{code9}
+            AND code9 = #{code9}
         </if>
     </select>
 </mapper>
