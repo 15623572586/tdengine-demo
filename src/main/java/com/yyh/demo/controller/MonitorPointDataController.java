@@ -1,6 +1,7 @@
 package com.yyh.demo.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.errorprone.annotations.Var;
 import com.yyh.demo.commons.Vars;
 import com.yyh.demo.dto.SearchConditionDto;
@@ -15,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -28,6 +26,7 @@ import java.util.List;
  * @author 喻云虎
  * @since 2022-08-09
  */
+@SuppressWarnings("ALL")
 @RestController
 @RequestMapping("/demo/monitor-point-data")
 public class MonitorPointDataController {
@@ -58,28 +57,45 @@ public class MonitorPointDataController {
         }
         return monitorPointDataService.saveBatch(monitorPointDataList) ? "ok" : "failed";
     }
+    List<String> times = Arrays.asList("2022-06-25 12:00:00", "2022-06-25 12:23:00", "2022-06-25 12:28:00");
     @PostMapping("saveBatch2")
     public String saveBatch2() {
         List<MonitorPointData> monitorPointDataList = new ArrayList<>();
-        int count = 0;
-        for (MonitorPointInfo pointInfo : Vars.pointInfoList) {
-            MonitorPointData data = new MonitorPointData();
-            data.setStName("st_lz");  // 超级表
-            data.setTName("`" + pointInfo.getTagName() + "`");  // 测点tagname
-            data.setCollectedTime(Vars.dateFormat.format(new Date()));
-            data.setDataValue(Math.random());
-            data.setTagName(pointInfo.getTagName());
-            // 插入数据时不设置tag
-            data.setCode2(pointInfo.getEquipmentCode().substring(0,2));  // 厂部
-            data.setCode4(pointInfo.getEquipmentCode().substring(0,4));
-            data.setCode6(pointInfo.getEquipmentCode().substring(0,6));
-            data.setCode9(pointInfo.getEquipmentCode().substring(0,9));
-            data.setCode12(pointInfo.getEquipmentCode());
-            monitorPointDataList.add(data);
-            count ++;
-            if (count == 20) break;
+        for (String time: times) {
+            int count = 0;
+            monitorPointDataList = new ArrayList<>();
+            for (MonitorPointInfo pointInfo : Vars.pointInfoList) {
+                if (StringUtils.isEmpty(pointInfo.getTagName())) {
+                    System.out.println("null" + pointInfo.getTagName());
+                    continue;
+                }
+                MonitorPointData data = new MonitorPointData();
+                data.setStName("st_data");  // 超级表
+                data.setTName("`" + pointInfo.getTagName() + "`");  // 测点tagname
+                try {
+                    data.setCollectedTime(Vars.dateFormat.format(Vars.dateFormat.parse(time)));
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+                data.setDataValue(Math.random());
+                data.setTagName(pointInfo.getTagName());
+                // 插入数据时不设置tag
+                data.setCode2(pointInfo.getEquipmentCode().substring(0, 2));  // 厂部
+                data.setCode4(pointInfo.getEquipmentCode().substring(0, 4));
+                data.setCode6(pointInfo.getEquipmentCode().substring(0, 6));
+                data.setCode9(pointInfo.getEquipmentCode().substring(0, 9));
+                data.setCode12(pointInfo.getEquipmentCode());
+                monitorPointDataList.add(data);
+                count++;
+//                if (count == 20) break;
+            }
+            try {
+                monitorPointDataService.saveBatch2(monitorPointDataList);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return monitorPointDataService.saveBatch2(monitorPointDataList) ? "ok" : "failed";
+        return  "ok";
     }
     @GetMapping("getPointDataByCondition")
     public String getPointDataByCondition(@RequestBody SearchConditionDto conditionDto) throws ParseException {
@@ -105,6 +121,17 @@ public class MonitorPointDataController {
             }
         }
         return String.valueOf(tableManagementMapper.createTableData(tableInfos));
+    }
+    @PostMapping("supplementData")
+    public String supplementData(@RequestBody JSONObject jsonObject) {
+        String startTime = jsonObject.getString("startTime");
+        String endTime = jsonObject.getString("endTime");
+        return monitorPointDataService.supplementDataByDate(startTime, endTime);
+    }
+    @GetMapping("createSt")
+    public String createSt() {
+        tableManagementMapper.createSTableData();
+        return "ok";
     }
 }
 

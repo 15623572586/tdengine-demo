@@ -5,7 +5,7 @@
 <!--    弃用-->
 <!--    <update id="createSTable">-->
 <!--        CREATE STABLE IF NOT EXISTS ${tableName} (-->
-<!--            collected_time TIMESTAMP,-->
+<!--            collection TIMESTAMP,-->
 <!--            data_value DOUBLE-->
 <!--        ) TAGS (-->
 <!--            tag_name NCHAR(200),-->
@@ -17,7 +17,7 @@
 <!--    </update>-->
     <update id="createSTableData">
         CREATE STABLE IF NOT EXISTS st_data (
-            collected_time TIMESTAMP,
+            collection TIMESTAMP,
             data_value DOUBLE
         ) TAGS (
             tag_name NCHAR(200),

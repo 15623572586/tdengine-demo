@@ -14,4 +14,7 @@ public class Vars {
     public static List<MonitorPointInfo> pointInfoList = new ArrayList<>();
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    public static String startTime;
+    public static String endTime;
+
 }

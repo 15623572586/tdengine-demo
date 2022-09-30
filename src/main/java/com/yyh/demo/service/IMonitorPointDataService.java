@@ -3,7 +3,9 @@ package com.yyh.demo.service;
 import com.yyh.demo.dto.SearchConditionDto;
 import com.yyh.demo.entity.MonitorPointData;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yyh.demo.entity.MonitorPointInfo;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -22,4 +24,5 @@ public interface IMonitorPointDataService extends IService<MonitorPointData> {
 
     String selectByCollectedTime(SearchConditionDto conditionDto);
 
+    String supplementDataByDate(String startTime, String endTime);
 }

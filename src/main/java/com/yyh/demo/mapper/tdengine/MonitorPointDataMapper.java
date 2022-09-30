@@ -36,4 +36,9 @@ public interface MonitorPointDataMapper extends BaseMapper<MonitorPointData> {
     List<MonitorPointData> selectByConditions(SearchConditionDto conditionDto);
 
     int insertBatch2(@Param("list") List<MonitorPointData> monitorPointData);
+
+    List<MonitorPointData> selectFirstByConditions(SearchConditionDto searchConditionDto);
+    List<MonitorPointData> selectLastByConditions(SearchConditionDto searchConditionDto);
+
+//    MonitorPointData selectFirst();
 }

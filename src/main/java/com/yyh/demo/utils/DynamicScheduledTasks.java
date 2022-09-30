@@ -2,8 +2,10 @@ package com.yyh.demo.utils;
 
 import com.google.errorprone.annotations.Var;
 import com.yyh.demo.commons.Vars;
+import com.yyh.demo.entity.MonitorPointData;
 import com.yyh.demo.entity.MonitorPointInfo;
 import com.yyh.demo.mapper.mysql.MonitorPointInfomationMapper;
+import com.yyh.demo.mapper.tdengine.MonitorPointDataMapper;
 import com.yyh.demo.mapper.tdengine.TableManagementMapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ public class DynamicScheduledTasks implements SchedulingConfigurer {
     private MonitorPointInfomationMapper infomationMapper;
     @Autowired
     private TableManagementMapper tableManagementMapper;
+    @Autowired
+    private MonitorPointDataMapper monitorPointDataMapper;
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
@@ -33,14 +37,14 @@ public class DynamicScheduledTasks implements SchedulingConfigurer {
         taskRegistrar.addTriggerTask(
             //1.添加任务内容(Runnable)
             () -> {
-                System.out.println("===执行定时任务：" + dateFormat.format(new Date()));
+//                System.out.println("===执行定时任务：" + dateFormat.format(new Date()));
                 //定时任务的执行内容 （创建新线程的方式）
                 List<MonitorPointInfo> monitorPointInfos = infomationMapper.getPointInfomation();
                 saveIntoMemory(monitorPointInfos);
             },
             //2.设置执行周期(Trigger)
             triggerContext -> {
-                System.out.println("===获取任务执行周期===");
+//                System.out.println("===获取任务执行周期===");
 
                 //从数据库获取执行周期
                  String cron = "";
@@ -57,6 +61,7 @@ public class DynamicScheduledTasks implements SchedulingConfigurer {
 
     public void saveIntoMemory(List<MonitorPointInfo> monitorPointInfos) {
         Vars.pointInfoList = monitorPointInfos;
+        System.out.println(Vars.pointInfoList.size());
 //        HashMap<String, MonitorPointInfo> newPointInfos = new HashMap<>();
 //        for (MonitorPointInfo info: monitorPointInfos) {
 //            // 创建超级表--如果存在自动忽略

@@ -37,13 +37,13 @@ public class WriteDataToTDengine implements SchedulingConfigurer {
         taskRegistrar.addTriggerTask(
             //1.添加任务内容(Runnable)
             () -> {
-                System.out.println("===执行写入任务：" + dateFormat.format(new Date()));
-//                saveBatch();
-                System.out.println("===完成一批写入任务：" + dateFormat.format(new Date()));
+//                System.out.println("===执行写入任务：" + dateFormat.format(new Date()));
+////                saveBatch();
+//                System.out.println("===完成一批写入任务：" + dateFormat.format(new Date()));
             },
             //2.设置执行周期(Trigger)
             triggerContext -> {
-                System.out.println("===获取任务执行周期===");
+//                System.out.println("===获取任务执行周期===");
 
                 //从数据库获取执行周期
                  String cron = "";

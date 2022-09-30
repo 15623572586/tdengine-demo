@@ -27,23 +27,40 @@
             )
         </foreach>
     </insert>
-    <resultMap id="BaseResultMap" type="map">
-        <id column="collected_time" jdbcType="TIMESTAMP" property="collectedTime" />
+    <resultMap id="BaseResultMap" type="com.yyh.demo.entity.MonitorPointData">
+        <id column="collection_time" jdbcType="TIMESTAMP" property="collectedTime" />
         <result column="data_value" jdbcType="DOUBLE" property="dataValue" />
     </resultMap>
     <select id="selectByConditions" parameterType="com.yyh.demo.dto.SearchConditionDto" resultMap="BaseResultMap">
-        SELECT collected_time, data_value from
+        SELECT collection_time, data_value from
         <choose>
             <when test="tName != null and tName != ''">
-                monitor_point_data.${tName}
+                ${tName}
             </when>
             <otherwise>
-                monitor_point_data.${stName}
+                ${stName}
             </otherwise>
         </choose>
-        WHERE collected_time BETWEEN #{startTimeStemp} AND #{endTimeStemp}
+        WHERE collection_time BETWEEN #{startTime} AND #{endTime}
         <if test="code9 != null and tagName != ''">
             AND code9 = #{code9}
         </if>
+    </select>
+    <select id="selectFirstByConditions" parameterType="com.yyh.demo.dto.SearchConditionDto" resultMap="BaseResultMap">
+        SELECT collection_time, data_value from st_data
+        WHERE collection_time BETWEEN #{startTime} AND #{endTime}
+        AND tag_name = #{tagName}
+        LIMIT 0, 1
+    </select>
+    <select id="selectLastByConditions" parameterType="com.yyh.demo.dto.SearchConditionDto" resultMap="BaseResultMap">
+        SELECT collection_time, data_value from st_data
+        WHERE collection_time BETWEEN #{startTime} AND #{endTime}
+        AND tag_name = #{tagName}
+        ORDER BY collection_time DESC
+        LIMIT 0, 1
+    </select>
+    <select id="selectFirst" resultMap="BaseResultMap">
+        select collection_time, data_value from st_data
+        limit 0, 1
     </select>
 </mapper>
