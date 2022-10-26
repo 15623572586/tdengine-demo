@@ -14,11 +14,9 @@ spring:
       driver-class-name: com.taosdata.jdbc.TSDBDriver  # 6030
 #      driver-class-name: com.taosdata.jdbc.rs.RestfulDriver  # 6041
     mysql:
-#      jdbc-url: jdbc:mysql://172.17.131.243:8066/jeecg_coldrolling?charset=UTF-8&locale=en_US.UTF-8&timezone=UTC-8
-      jdbc-url: jdbc:mysql://172.16.135.172:8066/jeecg_eaep?charset=UTF-8&locale=en_US.UTF-8&timezone=UTC-8
-#      jdbc-url: jdbc:mysql://10.162.33.202:8066/jeecg_coldrolling?charset=UTF-8&locale=en_US.UTF-8&timezone=UTC-8
-      username: mycat
-      password: bwzw
+      jdbc-url: jdbc:mysql://10.162.33.202:8066/jeecg_coldrolling?charset=UTF-8&locale=en_US.UTF-8&timezone=UTC-8
+      username: root
+      password: ontoweb
       driver-class-name: com.mysql.cj.jdbc.Driver
 
 

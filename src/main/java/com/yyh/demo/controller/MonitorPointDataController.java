@@ -87,7 +87,7 @@ public class MonitorPointDataController {
                 data.setCode12(pointInfo.getEquipmentCode());
                 monitorPointDataList.add(data);
                 count++;
-//                if (count == 20) break;
+                if (count == 20) break;
             }
             try {
                 monitorPointDataService.saveBatch2(monitorPointDataList);

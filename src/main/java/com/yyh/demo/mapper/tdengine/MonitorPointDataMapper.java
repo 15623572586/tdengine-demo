@@ -1,6 +1,5 @@
 package com.yyh.demo.mapper.tdengine;
 
-import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.yyh.demo.dto.SearchConditionDto;
 import com.yyh.demo.entity.MonitorPointData;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -16,7 +15,6 @@ import java.util.List;
  * @author 喻云虎
  * @since 2022-08-09
  */
-//Mapper的类/方法上使用 忽略多租户注解
 public interface MonitorPointDataMapper extends BaseMapper<MonitorPointData> {
 
 
